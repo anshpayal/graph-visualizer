@@ -19,8 +19,14 @@ export interface State {
   edges: Edge[];
 }
 
+export interface HistoryAction {
+  type: 'NODE_POSITION' | 'NODE_COLOR' | 'NODE_FONT_SIZE';
+  nodeId: string;
+  before: any;
+  after: any;
+}
+
 export interface HistoryState {
-  past: Action[];
-  present: State;
-  future: Action[];
+  past: HistoryAction[];
+  future: HistoryAction[];
 }

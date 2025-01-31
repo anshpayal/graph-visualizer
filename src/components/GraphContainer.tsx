@@ -5,7 +5,6 @@ import {
   Controls,
   Node as FlowNode,
   Edge as FlowEdge,
-  Connection,
   useNodesState,
   useEdgesState,
 } from "@xyflow/react";
@@ -15,10 +14,11 @@ import {
   updateNodePosition,
   setSelectedNode,
 } from "../redux/slices/graphSlice";
+import { addToHistory } from "../redux/slices/historySlice";
 import CustomNode from "./CustomNode";
 import NodeCustomizationPanel from "./NodeCustomizationPanel";
+import UndoRedoControls from "./UndoRedoControls";
 import "@xyflow/react/dist/style.css";
-
 
 const nodeTypes = {
   custom: CustomNode,
@@ -33,7 +33,11 @@ const GraphContainer: React.FC = () => {
   const [nodes, setNodes, onNodesChange] = useNodesState([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
 
-  // Sync Redux state with React Flow state
+  // Track the initial position of the node being dragged
+  const [dragStartPosition, setDragStartPosition] = React.useState<{
+    [key: string]: { x: number; y: number };
+  }>({});
+
   useEffect(() => {
     setNodes(
       reduxNodes.map((node) => ({
@@ -44,16 +48,45 @@ const GraphContainer: React.FC = () => {
     setEdges(reduxEdges);
   }, [reduxNodes, reduxEdges]);
 
+  const onNodeDragStart = useCallback(
+    (event: React.MouseEvent, node: FlowNode) => {
+      setDragStartPosition({
+        [node.id]: { x: node.position.x, y: node.position.y },
+      });
+    },
+    []
+  );
+
   const onNodeDragStop = useCallback(
     (event: React.MouseEvent, node: FlowNode) => {
-      dispatch(
-        updateNodePosition({
-          id: node.id,
-          position: node.position,
-        })
-      );
+      const startPosition = dragStartPosition[node.id];
+
+      if (
+        startPosition &&
+        (startPosition.x !== node.position.x ||
+          startPosition.y !== node.position.y)
+      ) {
+        dispatch(
+          addToHistory({
+            type: "NODE_POSITION",
+            nodeId: node.id,
+            before: startPosition,
+            after: { x: node.position.x, y: node.position.y },
+          })
+        );
+
+        dispatch(
+          updateNodePosition({
+            id: node.id,
+            position: { x: node.position.x, y: node.position.y },
+          })
+        );
+      }
+
+      // Clear the start position
+      setDragStartPosition({});
     },
-    [dispatch]
+    [dispatch, dragStartPosition]
   );
 
   const onNodeClick = useCallback(
@@ -74,6 +107,7 @@ const GraphContainer: React.FC = () => {
         edges={edges}
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
+        onNodeDragStart={onNodeDragStart}
         onNodeDragStop={onNodeDragStop}
         onNodeClick={onNodeClick}
         onPaneClick={onPaneClick}
@@ -84,6 +118,7 @@ const GraphContainer: React.FC = () => {
         <Controls />
       </ReactFlow>
       <NodeCustomizationPanel />
+      <UndoRedoControls />
     </div>
   );
 };

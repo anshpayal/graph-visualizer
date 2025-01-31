@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../redux/store";
@@ -5,12 +6,14 @@ import {
   updateNodeColor,
   updateNodeFontSize,
 } from "../redux/slices/graphSlice";
+import { addToHistory } from "../redux/slices/historySlice";
 
 const NodeCustomizationPanel: React.FC = () => {
   const dispatch = useDispatch();
   const selectedNodeId = useSelector(
     (state: RootState) => state.graph.selectedNodeId
   );
+  const nodes = useSelector((state: RootState) => state.graph.nodes);
   const selectedNode = useSelector((state: RootState) =>
     state.graph.nodes.find((node) => node.id === selectedNodeId)
   );
@@ -25,6 +28,16 @@ const NodeCustomizationPanel: React.FC = () => {
 
   const handleColorChange = (color: string) => {
     if (selectedNodeId) {
+      // First dispatch the history action
+      dispatch(
+        addToHistory({
+          type: "NODE_COLOR",
+          nodeId: selectedNodeId,
+          before: selectedNode.data.color,
+          after: color,
+        })
+      );
+      // Then update the node
       dispatch(
         updateNodeColor({
           id: selectedNodeId,
@@ -36,6 +49,16 @@ const NodeCustomizationPanel: React.FC = () => {
 
   const handleFontSizeChange = (fontSize: number) => {
     if (selectedNodeId) {
+      // First dispatch the history action
+      dispatch(
+        addToHistory({
+          type: "NODE_FONT_SIZE",
+          nodeId: selectedNodeId,
+          before: selectedNode.data.fontSize,
+          after: fontSize,
+        })
+      );
+      // Then update the node
       dispatch(
         updateNodeFontSize({
           id: selectedNodeId,

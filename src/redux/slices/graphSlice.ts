@@ -43,7 +43,10 @@ const graphSlice = createSlice({
     ) => {
       const node = state.nodes.find((n) => n.id === action.payload.id);
       if (node) {
-        node.position = action.payload.position;
+        node.position = {
+          x: action.payload.position.x,
+          y: action.payload.position.y,
+        };
       }
     },
     setSelectedNode: (state, action: PayloadAction<string | null>) => {
