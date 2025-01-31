@@ -1,50 +1,110 @@
-# React + TypeScript + Vite
+# React Flow Graph Visualization
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+An interactive graph visualization application using React Flow that allows users to manipulate and customize graph elements with undo/redo functionality.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### Graph Visualization
+- Initializes with 10 interconnected nodes
+- Nodes are draggable
+- Smooth animations for graph interactions
 
-## Expanding the ESLint configuration
+### Node Customization
+- **Color Modification**
+  - Select any node to change its color using a color picker
+  - Color changes are immediately reflected
+  - Color history is stored for undo/redo functionality
+- **Font Size Adjustment**
+  - Modify node text size (supports standard sizes from 12px to 24px)
+  - Changes are tracked for undo/redo
+  - Ensures text remains readable at all sizes
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+### Undo/Redo Functionality
+- Undo button to revert the last action
+- Redo button to restore a reverted action
+- Tracks the following actions:
+  - Color changes
+  - Font size modifications
+  - Node position changes
+- Maintains a history stack of all modifications
 
-- Configure the top-level `parserOptions` property like this:
+---
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+## Setup Instructions
+
+To set up the project locally, follow these steps:
+
+1. Clone the repository:
+   ```sh
+   git clone <repository_url>
+   cd graph-visualizer
+   ```
+2. Install dependencies:
+   ```sh
+   npm install
+   ```
+3. Start the development server:
+   ```sh
+   npm run dev
+   ```
+
+---
+
+## Available Scripts
+
+- `npm run dev` - Starts the development server
+- `npm run build` - Builds the project
+- `npm run lint` - Runs ESLint to check for code quality issues
+- `npm run preview` - Serves the built project
+
+---
+
+## Dependencies
+
+```json
+"dependencies": {
+  "@radix-ui/react-slider": "^1.2.2",
+  "@tailwindcss/vite": "^4.0.1",
+  "react": "^18.3.1",
+  "react-dom": "^18.3.1"
+},
+"devDependencies": {
+  "@eslint/js": "^9.17.0",
+  "@reduxjs/toolkit": "^2.5.1",
+  "@types/node": "^22.12.0",
+  "@types/react": "^18.3.18",
+  "@types/react-dom": "^18.3.5",
+  "@vitejs/plugin-react": "^4.3.4",
+  "@xyflow/react": "^12.4.2",
+  "autoprefixer": "^10.4.20",
+  "eslint": "^9.17.0",
+  "eslint-plugin-react-hooks": "^5.0.0",
+  "eslint-plugin-react-refresh": "^0.4.16",
+  "globals": "^15.14.0",
+  "postcss": "^8.5.1",
+  "react-redux": "^9.2.0",
+  "tailwindcss": "^4.0.1",
+  "typescript": "~5.6.2",
+  "typescript-eslint": "^8.18.2",
+  "vite": "^6.0.5"
+}
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+---
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+## Basic Usage Guide
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+- The application starts with **10 interconnected nodes** visible on the screen.
+- You can **drag nodes** to any position.
+- To **change the color or font size** of a node:
+  1. Select the node.
+  2. Use the provided controls to modify its color and font size.
+  3. The changes will be immediately reflected.
+- The **Undo/Redo buttons** allow you to revert or restore actions such as:
+  - Node position changes
+  - Color modifications
+  - Font size adjustments
+- Due to **smooth animations**, undoing the position of a node may require multiple clicks.
+
+Enjoy exploring the interactive graph visualization!
+
