@@ -4,6 +4,7 @@ import { Node, Edge } from '../../types';
 interface GraphState {
   nodes: Node[];
   edges: Edge[];
+  selectedNodeId: string | null;
 }
 
 const initialNodes: Node[] = Array.from({ length: 10 }, (_, i) => ({
@@ -17,6 +18,7 @@ const initialNodes: Node[] = Array.from({ length: 10 }, (_, i) => ({
     color: '#ffffff',
     fontSize: 12,
   },
+  type: 'custom',
 }));
 
 const initialEdges: Edge[] = Array.from({ length: 15 }, (_, i) => ({
@@ -28,6 +30,7 @@ const initialEdges: Edge[] = Array.from({ length: 15 }, (_, i) => ({
 const initialState: GraphState = {
   nodes: initialNodes,
   edges: initialEdges,
+  selectedNodeId: null,
 };
 
 const graphSlice = createSlice({
@@ -43,8 +46,34 @@ const graphSlice = createSlice({
         node.position = action.payload.position;
       }
     },
+    setSelectedNode: (state, action: PayloadAction<string | null>) => {
+      state.selectedNodeId = action.payload;
+    },
+    updateNodeColor: (
+      state,
+      action: PayloadAction<{ id: string; color: string }>
+    ) => {
+      const node = state.nodes.find((n) => n.id === action.payload.id);
+      if (node) {
+        node.data.color = action.payload.color;
+      }
+    },
+    updateNodeFontSize: (
+      state,
+      action: PayloadAction<{ id: string; fontSize: number }>
+    ) => {
+      const node = state.nodes.find((n) => n.id === action.payload.id);
+      if (node) {
+        node.data.fontSize = action.payload.fontSize;
+      }
+    },
   },
 });
 
-export const { updateNodePosition } = graphSlice.actions;
+export const {
+  updateNodePosition,
+  setSelectedNode,
+  updateNodeColor,
+  updateNodeFontSize,
+} = graphSlice.actions;
 export default graphSlice.reducer;
