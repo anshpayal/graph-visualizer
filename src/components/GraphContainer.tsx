@@ -37,7 +37,9 @@ const GraphContainer: React.FC = () => {
     [key: string]: { x: number; y: number };
   }>({});
 
-  useEffect(() => {
+//The component selects nodes from Redux (reduxNodes) and sets them in the local state using useNodesState([]).
+//useEffect updates the local state whenever Redux state changes.
+  useEffect(() => { //
     setNodes(
       reduxNodes.map((node) => ({
         ...node,

@@ -1,13 +1,13 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Node, Edge } from '../../types';
 
-interface GraphState {
+interface GraphState { //structure of the graph state.
   nodes: Node[];
   edges: Edge[];
   selectedNodeId: string | null;
 }
 
-const initialNodes: Node[] = Array.from({ length: 10 }, (_, i) => ({
+const initialNodes: Node[] = Array.from({ length: 10 }, (_, i) => ({ //initalize the 10 nodes
   id: `node-${i}`,
   position: {
     x: Math.random() * 800,
@@ -21,7 +21,7 @@ const initialNodes: Node[] = Array.from({ length: 10 }, (_, i) => ({
   type: 'custom',
 }));
 
-const initialEdges: Edge[] = Array.from({ length: 15 }, (_, i) => ({
+const initialEdges: Edge[] = Array.from({ length: 15 }, (_, i) => ({ //initializing the 15 random edges
   id: `edge-${i}`,
   source: `node-${Math.floor(Math.random() * 10)}`,
   target: `node-${Math.floor(Math.random() * 10)}`,
@@ -36,7 +36,7 @@ const initialState: GraphState = {
 const graphSlice = createSlice({
   name: 'graph',
   initialState,
-  reducers: {
+  reducers: { //reducer actions to update the color,set selected node, update node color, font size
     updateNodePosition: (
       state,
       action: PayloadAction<{ id: string; position: { x: number; y: number } }>

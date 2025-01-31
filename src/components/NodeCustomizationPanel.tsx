@@ -9,6 +9,9 @@ import { addToHistory } from "../redux/slices/historySlice";
 
 const NodeCustomizationPanel: React.FC = () => {
   const dispatch = useDispatch();
+
+//The selectedNodeId is fetched from Redux (state.graph.selectedNodeId).
+//Using this selectedNodeId, the component retrieves the corresponding selectedNode from state.graph.nodes.
   const selectedNodeId = useSelector(
     (state: RootState) => state.graph.selectedNodeId
   );
