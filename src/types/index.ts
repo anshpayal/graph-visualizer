@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export interface Node {
   id: string;
   position: { x: number; y: number };

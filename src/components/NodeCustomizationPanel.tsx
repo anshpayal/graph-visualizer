@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../redux/store";
@@ -13,7 +12,6 @@ const NodeCustomizationPanel: React.FC = () => {
   const selectedNodeId = useSelector(
     (state: RootState) => state.graph.selectedNodeId
   );
-  const nodes = useSelector((state: RootState) => state.graph.nodes);
   const selectedNode = useSelector((state: RootState) =>
     state.graph.nodes.find((node) => node.id === selectedNodeId)
   );

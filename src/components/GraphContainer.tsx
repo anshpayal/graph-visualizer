@@ -4,7 +4,6 @@ import {
   Background,
   Controls,
   Node as FlowNode,
-  Edge as FlowEdge,
   useNodesState,
   useEdgesState,
 } from "@xyflow/react";
@@ -49,7 +48,7 @@ const GraphContainer: React.FC = () => {
   }, [reduxNodes, reduxEdges]);
 
   const onNodeDragStart = useCallback(
-    (event: React.MouseEvent, node: FlowNode) => {
+    (_event: React.MouseEvent, node: FlowNode) => {
       setDragStartPosition({
         [node.id]: { x: node.position.x, y: node.position.y },
       });
@@ -58,7 +57,7 @@ const GraphContainer: React.FC = () => {
   );
 
   const onNodeDragStop = useCallback(
-    (event: React.MouseEvent, node: FlowNode) => {
+    (_event: React.MouseEvent, node: FlowNode) => {
       const startPosition = dragStartPosition[node.id];
 
       if (
@@ -90,7 +89,7 @@ const GraphContainer: React.FC = () => {
   );
 
   const onNodeClick = useCallback(
-    (event: React.MouseEvent, node: FlowNode) => {
+    (_event: React.MouseEvent, node: FlowNode) => {
       dispatch(setSelectedNode(node.id));
     },
     [dispatch]
